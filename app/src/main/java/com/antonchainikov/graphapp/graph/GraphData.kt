@@ -2,7 +2,7 @@ package com.antonchainikov.graphapp.graph
 
 import java.util.*
 
-class GraphData(private val points:List<GraphPoint>) {
+class GraphData(val points:List<GraphPoint>) {
 
     companion object {
         @JvmStatic
@@ -14,6 +14,7 @@ class GraphData(private val points:List<GraphPoint>) {
     val maxXValue: Long
     val minXValue: Long
     val maxYValue: Long
+    val minYValue: Long
 
     init {
         val maxX = xValues.max()
@@ -24,6 +25,8 @@ class GraphData(private val points:List<GraphPoint>) {
 
         val maxY = yValues.max()
         maxYValue = maxY ?: 0
+
+        minYValue = 0L
     }
 
     fun size() = points.size
