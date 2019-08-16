@@ -1,5 +1,6 @@
 package com.antonchainikov.graphapp.graph.axis
 
+import android.content.Context
 import android.graphics.Canvas
 import com.antonchainikov.graphapp.graph.Dimensions
 import com.antonchainikov.graphapp.graph.GraphData
@@ -7,30 +8,35 @@ import com.antonchainikov.graphapp.graph.GraphData
 private const val TEXT_MARGIN = 16
 private const val LINES_COUNT_DEFAULT = 6
 
-class YAxis(data: GraphData, dimensions: Dimensions) : Axis(data, dimensions) {
+class YAxis(data: GraphData, dimensions: Dimensions, context: Context) : Axis(data, dimensions, context) {
     private val intervals = ArrayList<Long>(LINES_COUNT_DEFAULT)
 
-    override fun draw(canvas: Canvas) {
-        val linesCount = getLinesCount()
-        val intervals = getIntervals(linesCount)
-        intervals.forEach {
-            drawLevel(dimensions.verticalMapper.map(it, 0L, data.maxYValue), it, canvas)
+    constructor(context: Context): this(GraphData.default(), Dimensions(), context)
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        if (canvas != null) {
+            val linesCount = getLinesCount()
+            val intervals = getIntervals(linesCount)
+            intervals.forEach {
+                drawLevel(dimensions.verticalMapper.map(it, 0L, data.maxYValue), it, canvas)
+            }
         }
     }
 
     private fun drawLevel(height: Float, value: Long, canvas: Canvas) {
         if (height - TEXT_MARGIN > dimensions.getTop()) {
             canvas.drawLine(
-                dimensions.getStart().toFloat(),
+                dimensions.getStart(),
                 height,
-                dimensions.getEnd().toFloat(),
+                dimensions.getEnd(),
                 height,
                 axisPaint
             )
 
             canvas.drawText(
                 value.toString(),
-                (dimensions.getStart() + TEXT_MARGIN).toFloat(),
+                (dimensions.getStart() + TEXT_MARGIN),
                 height - TEXT_MARGIN,
                 textPaint
             )

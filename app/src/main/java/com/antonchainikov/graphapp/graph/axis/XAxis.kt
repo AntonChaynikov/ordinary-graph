@@ -1,5 +1,6 @@
 package com.antonchainikov.graphapp.graph.axis
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import com.antonchainikov.graphapp.graph.Dimensions
@@ -9,17 +10,21 @@ import org.joda.time.Instant
 private const val LABELS_COUNT_DEFAULT = 6
 private val DATE_FORMAT_DEFAULT = "dd.MM.yy HH:mm"
 
-class XAxis(data: GraphData, dimensions: Dimensions): Axis(data, dimensions){
+class XAxis(data: GraphData, dimensions: Dimensions, context: Context): Axis(data, dimensions, context){
     private val intervals = ArrayList<Long>(LABELS_COUNT_DEFAULT)
     private var textWidthRect: Rect = Rect()
 
-    override fun draw(canvas: Canvas) {
+    constructor(context: Context): this(GraphData.default(), Dimensions(), context)
 
-        val labelsCount = getLabelsCount()
-        val intervals = getIntervals(labelsCount)
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        if (canvas != null) {
+            val labelsCount = getLabelsCount()
+            val intervals = getIntervals(labelsCount)
 
-        intervals.forEach {
-            drawLabel(dimensions.horizontalMapper.map(it, data.minXValue, data.maxXValue), it, canvas)
+            intervals.forEach {
+                drawLabel(dimensions.horizontalMapper.map(it, data.minXValue, data.maxXValue), it, canvas)
+            }
         }
     }
 

@@ -1,12 +1,27 @@
 package com.antonchainikov.graphapp.graph
 
+import org.joda.time.LocalDateTime
 import java.util.*
 
 class GraphData(val points:List<GraphPoint>) {
 
     companion object {
         @JvmStatic
-        fun default() = GraphData(Collections.emptyList())
+        fun default() = getDefault() //GraphData(Collections.emptyList())
+
+            private fun getDefault(): GraphData {
+            val data = ArrayList<GraphPoint>(5)
+            val dateNow = LocalDateTime.now()
+            data.apply {
+                add(GraphPoint(dateNow.withDayOfMonth(5).toDate().time, 50))
+                add(GraphPoint(dateNow.withDayOfMonth(7).toDate().time, 100))
+                add(GraphPoint(dateNow.withDayOfMonth(8).toDate().time, 150))
+                add(GraphPoint(dateNow.withDayOfMonth(10).toDate().time, 70))
+                add(GraphPoint(dateNow.withDayOfMonth(11).toDate().time, 200))
+            }
+            return GraphData(data)
+        }
+
     }
 
     val xValues: List<Long> = points.map { it.date }

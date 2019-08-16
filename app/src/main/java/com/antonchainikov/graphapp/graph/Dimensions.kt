@@ -1,55 +1,55 @@
 package com.antonchainikov.graphapp.graph
 
-import android.graphics.Rect
+import android.graphics.RectF
 
-class Dimensions(private val renderArea: Rect = Rect()) {
+class Dimensions(private val renderArea: RectF = RectF()) {
 
     val window = Window
     val verticalMapper = VerticalMapper(renderArea)
     val horizontalMapper = HorizontalMapper(renderArea)
 
-    var marginStart: Int = 0
+    var marginStart: Float = 0F
         set(value) {
             val diff = value - field
             var newVal = getStart() + diff
-            if (newVal < 0) newVal = 0
+            if (newVal < 0) newVal = 0F
             setStart(newVal)
             field = value
         }
 
-    var marginEnd: Int = 0
+    var marginEnd: Float = 0F
         set(value) {
             val diff = value - field
             setEnd(getEnd() - diff)
             field = value
         }
 
-    var marginTop: Int = 0
+    var marginTop: Float = 0F
         set(value) {
             val diff = value - field
             var newVal = getTop() + diff
-            if (newVal < 0) newVal = 0
+            if (newVal < 0) newVal = 0F
             setTop(newVal)
             field = value
         }
 
-    var marginBottom: Int = 0
+    var marginBottom: Float = 0F
         set(value) {
             val diff = value - field
             setBottom(getBottom() - diff)
             field = value
         }
 
-    fun getDrawableArea() = Rect(renderArea)
+    fun getDrawableArea() = RectF(renderArea)
 
-    fun allocTop(height: Int): Dimensions {
+    fun allocTop(height: Float): Dimensions {
         val dimensions = Dimensions(getDrawableArea())
         dimensions.setBottom(height)
         setTop(height)
         return dimensions
     }
 
-    fun allocBottom(height: Int): Dimensions {
+    fun allocBottom(height: Float): Dimensions {
         val dimensions = Dimensions(getDrawableArea())
         val newAreaHeight = renderArea.height() - height
         dimensions.setTop(newAreaHeight)
@@ -57,14 +57,14 @@ class Dimensions(private val renderArea: Rect = Rect()) {
         return dimensions
     }
 
-    fun allocLeft(width: Int): Dimensions {
+    fun allocLeft(width: Float): Dimensions {
         val dimensions = Dimensions(getDrawableArea())
         dimensions.setEnd(width)
         setStart(width)
         return dimensions
     }
 
-    fun allocRight(width: Int): Dimensions {
+    fun allocRight(width: Float): Dimensions {
         val dimensions = Dimensions(getDrawableArea())
         val newAreaWidth = renderArea.width() - width
         dimensions.setStart(newAreaWidth)
@@ -92,23 +92,23 @@ class Dimensions(private val renderArea: Rect = Rect()) {
 
     fun getCenterY() = renderArea.centerY()
 
-    private fun setStart(value: Int) {
+    fun setStart(value: Float) {
         renderArea.left = value
     }
 
-    private fun setEnd(value: Int) {
+    fun setEnd(value: Float) {
         renderArea.right = value
     }
 
-    private fun setTop(value: Int) {
+    fun setTop(value: Float) {
         renderArea.top = value
     }
 
-    private fun setBottom(value: Int) {
+    fun setBottom(value: Float) {
         renderArea.bottom = value
     }
 
-    fun update(dx: Int, dy: Int) {
+    fun update(dx: Float, dy: Float) {
         renderArea.right += dx
         renderArea.bottom += dy
     }
